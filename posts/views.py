@@ -56,30 +56,3 @@ class UnlikePost(APIView):
 
 		services.unlike_post(post, request.user)
 		return Response(status=204)
-
-
-class ConcretePost(APIView):
-
-	def get(self, request, post_id):
-		concrete_post = services.get_concrete_post(post_id)
-		return render(request, 'posts/concrete_post.html', {
-			'post': concrete_post
-		})
-
-
-class CreatePost(APIView):
-
-	def get(self, request):
-		if not request.user.is_authenticated:
-			raise PermissionDenied
-
-		return render(request, 'posts/create.html')
-
-	def post(self, request):
-		if not request.user.is_authenticated:
-			raise PermissionDenied
-
-		created_post = services.create_post(**request.data, author=request.user)
-		return render(request, 'posts/post_created.html', {
-			'post': created_post
-		})
